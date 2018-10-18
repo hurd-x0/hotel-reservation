@@ -2,12 +2,12 @@
 
 set -eu
 
-# echo "Stargin Cassandra"
+# echo "Starting Cassandra"
 # cd ./data/cassandra
 # ./deploy.sh
 # cd -
 
-# echo "Stargin MariaDB"
+# echo "Starting MariaDB"
 # cd ./data/mariadb
 # ./deploy.sh
 # cd -

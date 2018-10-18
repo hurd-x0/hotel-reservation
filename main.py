@@ -1,6 +1,8 @@
 from cassandra.cluster import Cluster
-from hotelreservation.export import export_hotels, export_rooms
+import pymysql
+from hotelreservation.dbexport import export_hotels, export_rooms
 from hotelreservation.transform import merge_rooms_with_hotels
+from hotelreservation.dbimport import import_hotels
 
 
 def main():
@@ -9,6 +11,9 @@ def main():
             hotels = export_hotels(session)
             rooms = export_rooms(session)
             hotels_with_rooms = merge_rooms_with_hotels(hotels, rooms)
+            with pymysql.connect(host="172.17.0.1", port=3306, user="vld", password="Password1!",
+                                 db="hotel_reservation") as connection:
+                import_hotels(connection, hotels_with_rooms)
 
 
 if __name__ == "__main__":
