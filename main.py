@@ -11,9 +11,12 @@ def main():
             hotels = export_hotels(session)
             rooms = export_rooms(session)
             hotels_with_rooms = merge_rooms_with_hotels(hotels, rooms)
-            with pymysql.connect(host="172.17.0.1", port=3306, user="vld", password="Password1!",
-                                 db="hotel_reservation") as connection:
+            connection = pymysql.connect(host="172.17.0.1", port=3306, user="vld", password="Password1!",
+                                         db="hotel_reservation")
+            try:
                 import_hotels(connection, hotels_with_rooms)
+            finally:
+                connection.close()
 
 
 if __name__ == "__main__":
