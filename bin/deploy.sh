@@ -12,5 +12,5 @@ set -eu
 # ./deploy.sh
 # cd -
 
-echo "Migrating data"
+# echo "Migrating data"
 python main.py

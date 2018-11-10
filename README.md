@@ -9,3 +9,13 @@ pip install -r requirements.txt
 ./bin/deploy.sh
 deactivate
 ```
+
+# TODO
+
+- automatic deployment
+- configuration
+- logging
+- validation
+- error handling
+- tests
+- metrics
