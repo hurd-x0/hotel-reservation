@@ -1,6 +1,7 @@
 from functools import wraps
 from cassandra.cluster import Cluster
 from cassandra.query import dict_factory
+import pandas as pd
 
 
 CASSANDRA_NODE="172.17.0.1"
@@ -23,6 +24,7 @@ def export_hotels(session):
     cql = """SELECT hotel_name, hotel_address FROM hotel"""
     hotels = session.execute(cql)
     hotels = [dict(hotel) for hotel in hotels]
+    hotels = pd.DataFrame(hotels)
     return hotels
 
 
@@ -31,4 +33,5 @@ def export_rooms(session):
     cql = """SELECT hotel_name, room_number, room_description FROM room_by_hotel"""
     rooms = session.execute(cql)
     rooms = [dict(room) for room in rooms]
+    rooms = pd.DataFrame(rooms)
     return rooms

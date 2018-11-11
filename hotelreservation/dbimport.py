@@ -33,8 +33,9 @@ def with_mariadb_connection(execute_statement):
 def import_hotels(connection, hotels):
     with connection.cursor() as cursor:
         sql = """INSERT INTO hotel (hotel_name, hotel_address) VALUES (%(hotel_name)s, %(hotel_address)s)"""
-        for hotel in hotels:
-            cursor.execute(sql, hotel)
-            hotel["hotel_id"] = cursor.lastrowid
+        def save_hotel(hotel):
+            cursor.execute(sql, dict(hotel))
+            return cursor.lastrowid
+        hotels["hotel_id"] = hotels.apply(save_hotel, axis=1)
     connection.commit()
     return hotels
