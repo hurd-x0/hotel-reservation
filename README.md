@@ -12,6 +12,7 @@ deactivate
 
 # TODO
 
+- Cassandra > Pandas and Pandas to MariaDB optimal conversion
 - automatic deployment
 - configuration
 - logging

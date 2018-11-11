@@ -4,9 +4,9 @@ from cassandra.query import dict_factory
 import pandas as pd
 
 
-CASSANDRA_NODE="172.17.0.1"
-CASSANDRA_PORT=9042
-CASSANDRA_KEYSPACE="hotel_reservation"
+CASSANDRA_NODE = "172.17.0.1"
+CASSANDRA_PORT = 9042
+CASSANDRA_KEYSPACE = "hotel_reservation"
 
 
 def with_cassandra_session(execute_statement):
