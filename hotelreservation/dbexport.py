@@ -19,19 +19,22 @@ def with_cassandra_session(execute_statement):
     return create_session
 
 
+def read_items(session, cql):
+    items = session.execute(cql)
+    items = [dict(item) for item in items]
+    items = pd.DataFrame(items)
+    return items
+
+
 @with_cassandra_session
 def export_hotels(session):
     cql = """SELECT hotel_name, hotel_address FROM hotel"""
-    hotels = session.execute(cql)
-    hotels = [dict(hotel) for hotel in hotels]
-    hotels = pd.DataFrame(hotels)
+    hotels = read_items(session, cql)
     return hotels
 
 
 @with_cassandra_session
 def export_rooms(session):
     cql = """SELECT hotel_name, room_number, room_description FROM room_by_hotel"""
-    rooms = session.execute(cql)
-    rooms = [dict(room) for room in rooms]
-    rooms = pd.DataFrame(rooms)
+    rooms = read_items(session, cql)
     return rooms

@@ -1,4 +1,4 @@
-from functools import wraps
+from functools import wraps, partial
 from pymysql import connect
 from pymysql.cursors import DictCursor
 
@@ -29,6 +29,11 @@ def with_mariadb_connection(execute_statement):
     return create_connection
 
 
+def save_item(cursor, sql, item):
+    cursor.execute(sql, dict(item))
+    return cursor.lastrowid
+
+
 @with_mariadb_connection
 def import_hotels(connection, hotels):
     with connection.cursor() as cursor:
@@ -36,11 +41,7 @@ def import_hotels(connection, hotels):
             INSERT INTO hotel (hotel_name, hotel_address)
             VALUES (%(hotel_name)s, %(hotel_address)s)
         """
-
-        def save_hotel(hotel):
-            cursor.execute(sql, dict(hotel))
-            return cursor.lastrowid
-
+        save_hotel = partial(save_item, cursor, sql)
         hotels["hotel_id"] = hotels.apply(save_hotel, axis=1)
     connection.commit()
     return hotels
@@ -53,11 +54,7 @@ def import_rooms(connection, rooms):
             INSERT INTO room (hotel_id, room_number, room_description)
             VALUES (%(hotel_id)s, %(room_number)s, %(room_description)s)
         """
-
-        def save_room(room):
-            cursor.execute(sql, dict(room))
-            return cursor.lastrowid
-
+        save_room = partial(save_item, cursor, sql)
         rooms["room_id"] = rooms.apply(save_room, axis=1)
     connection.commit()
     return rooms
